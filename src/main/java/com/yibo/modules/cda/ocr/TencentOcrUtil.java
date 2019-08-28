@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 调用腾讯ocr接口示例
@@ -40,8 +41,8 @@ public class TencentOcrUtil {
 
     public static void main(String[] args) {
 
-        String testDirPath = "D:\\zhf\\Documents\\CDA\\WST 483.4-2016健康档案共享文档规范第4部分儿童健康体检";
-        String saveFileName = "儿童健康体检文档.xml";
+        String testDirPath = "D:\\zhf\\Documents\\CDA\\WST 483.13-2016健康档案共享文档规范第13部分2型糖尿病患者随访服务";
+        String saveFileName = "2型糖尿病患者随访服务文档.xml";
         extractAPdf(testDirPath, saveFileName);
     }
 
@@ -60,8 +61,8 @@ public class TencentOcrUtil {
         //读取目录下的所有图片
         List<String> fileNames = FileUtils.getDirectoryFilesName(dirPath);
         //按照指定文件名进行排序，这里我比较时只保留数字，这样保证了读取的顺序是正确的，不过需要按指定的格式保存图片
-        fileNames.stream().sorted(Comparator.comparing(o -> o.replaceAll("[-.png]", "")));
-        for (String fileName : fileNames) {
+        List<String> sortedList = fileNames.stream().sorted(Comparator.comparingInt(o -> Integer.valueOf(o.replaceAll("[-.png]", "")))).collect(Collectors.toList());
+        for (String fileName : sortedList) {
             //排除.xml
             if (!fileName.contains(".xml")) {
                 //拼出图片路径
