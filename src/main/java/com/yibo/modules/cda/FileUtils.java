@@ -191,11 +191,12 @@ public class FileUtils {
      * @return
      */
     public static String readFile2String(Path path) {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
 
         //读取文件内容
         try {
-            Files.lines(path).forEach(sb::append);
+            //增加换行符
+            Files.lines(path).forEach(e -> sb.append(e).append("\r\n"));
         } catch (IOException e) {
             e.printStackTrace();
         }
